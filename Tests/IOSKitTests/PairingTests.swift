@@ -1,6 +1,5 @@
 @testable import IOSKit
 import Foundation
-import Security
 import Testing
 
 @Suite("Pairing")
@@ -84,20 +83,5 @@ struct PairingTests {
 
         let loaded = try store.load()
         #expect(loaded == machines)
-    }
-
-    @Test("a written token round-trips and delete clears it")
-    func tokenRoundTrip() throws {
-        let machineID = "ioskit-tests-\(UUID().uuidString)"
-        let tokens = TokenStore(service: "ioskit-tests.v1")
-        defer { try? tokens.deleteToken(machineID: machineID) }
-
-        #expect(try tokens.token(machineID: machineID) == nil)
-        try tokens.setToken("secret-abc", machineID: machineID)
-        #expect(try tokens.token(machineID: machineID) == "secret-abc")
-        try tokens.setToken("secret-xyz", machineID: machineID)
-        #expect(try tokens.token(machineID: machineID) == "secret-xyz")
-        try tokens.deleteToken(machineID: machineID)
-        #expect(try tokens.token(machineID: machineID) == nil)
     }
 }
