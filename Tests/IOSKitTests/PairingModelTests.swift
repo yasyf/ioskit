@@ -99,7 +99,7 @@ let testIdentity = AppIdentity(
     let registry = FakeRegistry()
     let model = PairingModel(registry: registry, identity: testIdentity)
 
-    model.pair(link: #require(URL(string: "ccpresent://pair?url=https%3A%2F%2Fstudio.tail1234.ts.net%3A8765")))
+    try model.pair(link: #require(URL(string: "ccpresent://pair?url=https%3A%2F%2Fstudio.tail1234.ts.net%3A8765")))
 
     let machine = try requirePaired(model)
     #expect(machine.baseURL == URL(string: "https://studio.tail1234.ts.net:8765"))
@@ -111,7 +111,7 @@ let testIdentity = AppIdentity(
 @Test func pairLinkRejectsAnotherAppsLink() throws {
     let model = PairingModel(registry: FakeRegistry(), identity: testIdentity)
 
-    model.pair(link: #require(URL(string: "longrunning://pair?url=https%3A%2F%2Fstudio.ts.net")))
+    try model.pair(link: #require(URL(string: "longrunning://pair?url=https%3A%2F%2Fstudio.ts.net")))
 
     guard case .failed = model.phase else {
         Issue.record("expected failed, got \(model.phase)")
